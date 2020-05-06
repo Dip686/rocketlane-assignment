@@ -1,0 +1,1 @@
+export const STORAGEKEY = 'custom-drop-down-for-search-auto-pop-by-smartLane';

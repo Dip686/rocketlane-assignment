@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div>
+    <span id="smartsearch-id1"></span>
+    <span id="smartsearch-id2" style="float: right;"></span>
+  </div>
+  <script src="../dist/dropdown-iife-build.js"></script>
+  <script>
+    smartSearch({
+      dataurl: 'https://restcountries.eu/rest/v2/all',
+      nodeid: 'smartsearch-id1',
+      field: 'name'
+    });
+    smartSearch({
+      dataurl: 'https://restcountries.eu/rest/v2/all',
+      nodeid: 'smartsearch-id2',
+      field: 'name'
+    });
+  </script>
+</body>
+</html>
