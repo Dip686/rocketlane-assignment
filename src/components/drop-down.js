@@ -15,7 +15,7 @@ export default class DropDown extends React.Component {
       <div className="autosuggestion-dropdown" style={dropDownStyle}>
         {
           this.props.searchHistory.map((val, index)=>{
-            return <div key={index} onMouseDown={(e)=>{this.props.updateSearchText(e.target.innerText);this.props.hideDropDown();}} className="autocomplete-option" style={{'padding': '12px 16px', 'cursor': 'pointer'}}>{val.name}</div>
+            return <div key={index} onMouseDown={(e)=>{this.props.updateSearchText(e.target.innerText);this.props.hideDropDown();}} className="autocomplete-option" style={{'padding': '12px 16px', 'cursor': 'pointer'}}>{val[this.props.field]}</div>
           })
         }
       </div>
