@@ -15,3 +15,30 @@ usage:
     });
 ```
 To look into the implementation please visit src/index.js
+
+Bous feature:
+User can configure data fetching frequency.
+```
+case 1:
+    smartSearch({
+      dataurl: 'https://restcountries.eu/rest/v2/all',
+      nodeid: 'smartsearch-id1',
+      field: 'name',
+      fetchConfig: {
+        type: 'onkeypress'
+      }
+    });
+case 2:
+    smartSearch({
+      dataurl: 'https://restcountries.eu/rest/v2/all',
+      nodeid: 'smartsearch-id2',
+      field: 'name',
+      fetchConfig: {
+        type: 'onInterval',
+        interval: 1,
+        unit: 'second'
+      }
+    });
+
+
+```
