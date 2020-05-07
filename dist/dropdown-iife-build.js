@@ -9774,6 +9774,10 @@ var smartSearch = (function () {
 	}
 	});
 
+	/**
+	 * @class DropDown renders the dropdown view of list of searched result
+	 */
+
 	class DropDown extends react.Component {
 	  render() {
 	    //showDropDown
@@ -9832,10 +9836,16 @@ var smartSearch = (function () {
 	function fetchAndUpdateData(url, STORAGEKEY) {
 	  fetch(url).then(res => res.json()).then(userData => {
 	    localStorage.setItem(STORAGEKEY, JSON.stringify(userData));
+	    let e = new Event('storageUpdated');
+	    document.dispatchEvent(e);
 	  });
 	}
 
 	const STORAGEKEY = 'custom-drop-down-for-search-auto-pop-by-smartLane';
+
+	/**
+	 * @class SearchBox class takes care of the entire implementation of searchbox
+	 */
 
 	class SearchBox extends react.Component {
 	  render() {
@@ -9897,6 +9907,11 @@ var smartSearch = (function () {
 
 	}
 
+	/**
+	 * @class Container, this class holds the entire implementation of search box,
+	 * it consists of searchbox and dropdown compoment
+	 */
+
 	class Container extends react.Component {
 	  constructor(props) {
 	    super();
@@ -9910,10 +9925,30 @@ var smartSearch = (function () {
 	    };
 	  }
 
+	  componentDidMount() {
+	    let smartSearch = this;
+	    document.addEventListener('storageUpdated', function updateCacheData() {
+	      let countryDetails = JSON.parse(localStorage.getItem(STORAGEKEY));
+	      smartSearch.setState({
+	        cachedData: countryDetails
+	      });
+	      console.log('a');
+	    });
+	  }
+
+	  componentWillUnmount() {
+	    document.removeEventListener('storageUpdated', updateCacheData);
+	  }
+	  /**
+	   * @description This function is solely responsible to display typed text
+	   * @param {Srting} text value to be updated in searchbox
+	   */
+
+
 	  updateSearchText(text) {
 	    let firstNameRegex = new RegExp('^' + text, 'i'),
 	        showDropDown = text.length > 0,
-	        searchHistory = text ? this.state.cachedData.filter(val => firstNameRegex.test(val['name'])) : [];
+	        searchHistory = text ? this.state.cachedData.filter(val => firstNameRegex.test(val['name'])) : []; // if search suggestion can provided, update the suggestion text
 
 	    if (searchHistory.length > 0) {
 	      this.updateFirstSuggestion(searchHistory[0].name);
@@ -9927,12 +9962,21 @@ var smartSearch = (function () {
 	      showDropDown
 	    });
 	  }
+	  /**
+	   * @description This function updates the suggestion string to be shown in searchbox
+	   * @param {string} val 
+	   */
+
 
 	  updateFirstSuggestion(val) {
 	    this.setState({
 	      searchSuggestion: val
 	    });
 	  }
+	  /**
+	   * @description hides the drop down when required
+	   */
+
 
 	  hideDropDown() {
 	    this.setState({
@@ -9968,7 +10012,7 @@ var smartSearch = (function () {
 
 	/**
 	 * @description this function initiates DOM rendering
-	 * @param {Object} dropdownConfig user given dropdownConfig
+	 * @param {Object} config user given Config
 	 * @param {string} nodeid id reference of the element we are looking attaching dom
 	 */
 
@@ -9984,13 +10028,14 @@ var smartSearch = (function () {
 
 
 	function smartSearch(config) {
-	  // fetch and sanitise data
+	  // fetch and sanitise data, store into localstorage if not present
 	  if (!localStorage.getItem(STORAGEKEY)) {
 	    fetch(config.dataurl).then(res => res.json()).then(userData => {
 	      localStorage.setItem(STORAGEKEY, JSON.stringify(userData));
 	      attachDOM(config, config.nodeid);
 	    });
 	  } else {
+	    // if local storage has the data present, use it
 	    attachDOM(config, config.nodeid);
 	  }
 	}

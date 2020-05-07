@@ -18,5 +18,7 @@ export function placeCaretAtEnd(el) {
 export function fetchAndUpdateData(url, STORAGEKEY) {
   fetch(url).then(res=> res.json()).then(userData => {
     localStorage.setItem(STORAGEKEY, JSON.stringify(userData));
+    let e = new Event('storageUpdated');
+    document.dispatchEvent(e);
   });
 }

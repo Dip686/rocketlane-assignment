@@ -18,6 +18,14 @@ export default class Container extends React.Component {
       searchHistory: []
     };
   }
+  componentDidMount(){
+    let smartSearch = this;
+    document.addEventListener('storageUpdated', function updateCacheData () {
+      let countryDetails = JSON.parse(localStorage.getItem(STORAGEKEY));
+      smartSearch.setState({cachedData: countryDetails});
+      console.log('a');
+    });
+  }
   /**
    * @description This function is solely responsible to display typed text
    * @param {Srting} text value to be updated in searchbox
