@@ -15,12 +15,20 @@
     smartSearch({
       dataurl: 'https://restcountries.eu/rest/v2/all',
       nodeid: 'smartsearch-id1',
-      field: 'name'
+      field: 'name',
+      fetchConfig: {
+        type: 'onkeypress'
+      }
     });
     smartSearch({
       dataurl: 'https://restcountries.eu/rest/v2/all',
       nodeid: 'smartsearch-id2',
-      field: 'name'
+      field: 'name',
+      fetchConfig: {
+        type: 'onInterval',
+        interval: 1,
+        unit: 'second'
+      }
     });
   </script>
 </body>

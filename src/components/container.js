@@ -18,13 +18,22 @@ export default class Container extends React.Component {
       searchHistory: []
     };
   }
+
   componentDidMount(){
+    // The code is implemented only for case 1, fetchconfig onkeypress
     let smartSearch = this;
-    document.addEventListener('storageUpdated', function updateCacheData () {
+    smartSearch.updateCacheData =  function updateCacheData() {
       let countryDetails = JSON.parse(localStorage.getItem(STORAGEKEY));
       smartSearch.setState({cachedData: countryDetails});
-      console.log('a');
-    });
+    };
+    document.addEventListener('storageUpdated', this.updateCacheData);
+    // in case of case 2: on interval of 1sec, 1min, 1hr etc. (bassed on config) we need to use setInterval
+    //setInterval(function to invoke fetch data, fetchAndUpdateData, provided time config)
+  }
+  componentWillUnmount() {
+    // in case of onkeypress
+    document.removeEventListener('storageUpdated', this.updateCacheData);
+    // in case of configured time we have to clear the time interval
   }
   /**
    * @description This function is solely responsible to display typed text
