@@ -16,9 +16,11 @@ export function placeCaretAtEnd(el) {
   }
 }
 export function fetchAndUpdateData(url, STORAGEKEY) {
+  // case 1, updating data on every search
   fetch(url).then(res=> res.json()).then(userData => {
     localStorage.setItem(STORAGEKEY, JSON.stringify(userData));
     let e = new Event('storageUpdated');
     document.dispatchEvent(e);
   });
+  // case 2, fetching data on every time interval (1sec, 1min, 1hr etc)
 }
